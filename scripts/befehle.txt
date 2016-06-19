@@ -1,0 +1,18 @@
+./wms_request.py -count 10 -region 590000 210000 650000 270000 -maxres 4000 -minres 0.05 -maxsize 1920 1080 -minsize 500 300 -srs 21781 -filter_within ../data/geo_gemeinden_v.shp 
+
+
+./wms_request.py -count 1000 -region 590000 210000 650000 270000 -maxres 500 -minres 0.02 -maxsize 1920 1080 -minsize 500 300 -srs 21781 -filter_within ../data/geo_gemeinden_v.shp 
+
+
+./wms_request.py -count 1000 -region 590000 210000 650000 270000 -maxres 20 -minres 0.01 -maxsize 1920 1080 -minsize 500 300 -srs 21781 -filter_within ../data/geo_gemeinden_v.shp (Intersects)
+
+
+./wms_request.py -count 10000 -region 590000 210000 650000 270000 -minres 0.212 -maxres 1.322 -maxsize 1500 900 -minsize 1000 600 -srs 21781 -filter_within ../data/geo_gemeinden_v.shp (Contains)
+
+
+
+
+./wms_request.py -count 1000 -region 2590000 1210000 2650000 1270000 -maxres 20 -minres 0.01 -maxsize 1920 1080 -minsize 500 300 -srs 2056 -filter_within ../data/geo_gemeinden_v_lv95.shp  
+./wms_request.py -count 1000 -region 590000 210000 650000 270000 -maxres 20 -minres 0.01 -maxsize 1920 1080 -minsize 500 300 -srs 21781 -filter_within ../data/geo_gemeinden_v.shp  
+
+./wms_request.py -count 1000 -region 589725 240658 643275 278342 -maxres 20 -minres 0.01 -maxsize 1920 1080 -minsize 500 300 -srs 21781 -filter_intersects ../data/ortho_2015_bl_lv03.shp  
