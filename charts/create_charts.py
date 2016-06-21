@@ -40,40 +40,46 @@ t12 = [1, 2, 4, 8, 16, 32, 64]
 #filename = "avwms_req_per_sec"
 #title = "AVWMS (BoFlaeche, GB-Nr. Liegenschaften)"
 #mapserver = [9.1, 19.2, 32.3, 35.0, 34.7,34.7, 34.7]
+#mapserver_fcgi = [19.4, 38.1, 62.2, 67.2, 65.9, 67.2, 67.2]
 #qgisserver = [12.4, 25.0, 42.7, 46.9, 46.0, 46.6, 46.8]
 
 # AVWMS (max response time)
 #filename = "avwms_max_resp_time"
 #title = "AVWMS (BoFlaeche, GB-Nr. Liegenschaften)"
 #mapserver = [0.6, 0.7, 0.8, 1.4, 2.9, 5.9, 11.6]
+#mapserver_fcgi = [0.6, 1.2, 1.1, 1.3, 18.1, 30.2, 42.2]
 #qgisserver = [0.9, 1.6, 1.7, 2.6, 25.1, 49.2, 64.5]
 
 # Orthofoto (nearest neighbour)
 #filename = "ortho_req_per_sec"
 #title = "Orthofoto (nearest neighbour)"
 #mapserver = [19.0, 37.5, 63.9, 66.1, 65.0, 64.6, 64.2]
+#mapserver_fcgi = [32.4, 64.6, 105.4, 117.9, 116.9, 118.6, 116.6]
 #qgisserver = [11.1, 21.5, 38.6, 39.3, 39.4, 39.3, 39.0]
 
 # Orthofoto (nearest neighbour/ max_resp_time)
 #filename = "ortho_max_resp_time"
 #title = "Orthofoto (nearest neighbour)"
 #mapserver = [0.2, 0.2, 0.2, 0.4, 1.1, 2.0, 4.2]
+#mapserver_fcgi = [0.1, 1.1, 1.1, 1.1, 5.1, 11.1, 18.1]
 #qgisserver = [0.2, 1.4, 1.5, 2.1, 19.3, 23.2, 64.1]
 
 # Orthofoto (average)
 #filename = "ortho_resampling_req_per_sec"
 #title = "Orthofoto (average)"
 #mapserver = [4.4, 8.3, 14.9, 16.1, 15.9, 16.0, 16.0]
+#mapserver_fcgi = [4.9, 9.7, 17.4, 18.1, 17.9, 18.2, 18.4]
 #qgisserver = [6.3, 12.4, 22.3, 23.2, 23.1, 23.0, 23.2]
 
 # Orthofoto (average / max_resp_time)
 filename = "ortho_resampling_max_resp_time"
 title = "Orthofoto (average)"
 mapserver = [4.8, 4.8, 5.2, 10.5, 20.9, 42.1, 84.5]
+mapserver_fcgi = [4.6, 4.7, 5.0, 10.0, 58.5, 64.1, 65.8]
 qgisserver = [0.8, 1.4, 1.6, 2.8, 25.3, 47.1, 64.1]
 
-
-plt.plot(t11, mapserver,  marker='s', color='b', label='MapServer', linewidth='2')
+plt.plot(t11, mapserver,  marker='s', color='b', label='MapServer (CGI)', linewidth='2')
+plt.plot(t11, mapserver_fcgi, marker='^', color='m', label='MapServer (FCGI)', linewidth='2')
 plt.plot(t11, qgisserver, marker='o', color='y', label='QGIS-Server', linewidth='2')
 
 plt.xlabel('N Requests')

@@ -1,0 +1,319 @@
+MAP
+  #CONFIG "MS_ERRORFILE" "/tmp/ms_error.txt"
+  #DEBUG 5
+
+  NAME "WMS-test"
+  EXTENT 2590000 1210000 2650000 1270000
+  UNITS METERS 
+  FONTSET /home/stefan/tmp/mapserver/font.list
+  SHAPEPATH "../data"
+  IMAGECOLOR 255 255 255
+
+  SYMBOL
+    NAME "square"
+    TYPE vector 
+    POINTS
+      0 0
+      0 1
+      1 1
+      1 0
+      0 0
+    END 
+    FILLED true
+    ANCHORPOINT 0.5 0.5
+  END 
+
+  SYMBOL
+    NAME "circle"
+    TYPE ellipse 
+    POINTS
+      1 1
+    END
+    FILLED true
+    ANCHORPOINT 0.5 0.5
+  END
+  
+  WEB
+    METADATA
+      "wms_title"     "WMS Demo Server"  ##required
+      "wms_abstract"  "WMS Abstract"
+      "wms_onlineresource" "https://www.sogeo.services/cgi-bin/mapserv.fcgi?map=/home/stefan/tmp/mapserver/test.map&"   ##required
+      "wms_srs"       "EPSG:2056 EPSG:21781"  ##recommended
+      "wms_enable_request" "*"   ##necessary
+      "wms_getmap_formatlist" "image/png,image/jpeg"
+    END
+  END # Web
+
+  PROJECTION
+    "init=epsg:2056"   ##required
+  END
+
+
+
+
+
+  LAYER
+    NAME "LCSFC"
+    METADATA
+      "wms_title" "Bodenbedeckung farbig"     ## required
+      "wms_abstract" "Land cover surface / rechtsgültige Bodenbedeckungsflächen" 
+      "wms_extent" "2590000 1210000 2650000 1270000"    ## performance 
+      "wms_include_items" "all"
+      "gml_include_items" "all"
+      "wms_feature_mime_type" "application/vnd.ogc.gml"
+    END
+    
+    TEMPLATE fooOnlyForWMSGetFeatureInfo                ## required for GetFeatureInfo
+
+    TYPE POLYGON
+    STATUS OFF
+
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "host=localhost dbname=xanadu2 user=stefan password=ziegler12 port=5432"    
+    DATA "geometrie from av_avdpool_next.bodenbedeckung_boflaeche using unique t_id using srid=2056"
+
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+
+    PROJECTION
+      "init=epsg:2056"   ##recommended
+    END
+    
+    MAXSCALEDENOM 25000
+    
+    CLASSITEM "art"
+    
+    CLASS
+      NAME "Gebäude"
+      EXPRESSION "Gebaeude"
+      STYLE
+        COLOR 255 200 200
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.7
+      END  
+    END 
+    CLASS
+      NAME "Strasse / Weg"
+      EXPRESSION "befestigt.Strasse_Weg"
+      STYLE
+        COLOR 220 220 220
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.7
+      END  
+    END      
+    CLASS
+      NAME "Trottoir / Verkehrsinsel / Flugplatz"
+      MAXSCALEDENOM 5000
+      EXPRESSION {befestigt.Trottoir,befestigt.Verkehrsinsel,befestigt.Flugplatz}
+      STYLE
+        COLOR 220 220 220
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.7
+      END  
+    END 
+    CLASS
+      NAME "Bahn"
+      MAXSCALEDENOM 5000      
+      EXPRESSION "befestigt.Bahn"
+      STYLE
+        COLOR 240 220 200
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.7
+      END  
+    END 
+    CLASS
+      NAME "Wasserbecken / Gewässer"
+      MAXSCALEDENOM 5000
+      EXPRESSION {befestigt.Wasserbecken,Gewaesser.stehendes,Gewaesser.fliessendes}
+      STYLE
+        COLOR 150 200 255
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.7
+      END  
+    END 
+    CLASS
+      NAME "übrige befestigte"
+      MAXSCALEDENOM 5000
+      EXPRESSION {befestigt.uebrige_befestigte.Sportanlage_befestigt,befestigt.uebrige_befestigte.Lagerplatz,befestigt.uebrige_befestigte.Boeschungsbauwerk,befestigt.uebrige_befestigte.Gebaeudeerschliessung,befestigt.uebrige_befestigte.Parkplatz,befestigt.uebrige_befestigte.uebrige_befestigte}
+      STYLE
+        COLOR 240 240 240
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.7
+      END  
+    END 
+    CLASS
+      NAME "Acker / Wiese / Weide / Gartenanlage / übrige humusierte"
+      MAXSCALEDENOM 5000
+      EXPRESSION {humusiert.Acker_Wiese_Weide.Acker_Wiese,humusiert.Acker_Wiese_Weide.Weide,humusiert.Gartenanlage.Gartenanlage,humusiert.Gartenanlage.Parkanlage_humusiert,humusiert.Gartenanlage.Sportanlage_humusiert,humusiert.Gartenanlage.Friedhof,humusiert.uebrige_humusierte}
+      STYLE
+        COLOR 240 255 200
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.7
+      END  
+    END 
+    CLASS
+      NAME "Reben / übrige Intensivkultur"
+      MAXSCALEDENOM 5000
+      EXPRESSION {humusiert.Intensivkultur.Reben,humusiert.Intensivkultur.uebrige_Intensivkultur.Obstkultur,humusiert.Intensivkultur.uebrige_Intensivkultur.uebrige_Intensivkultur}
+      STYLE
+        COLOR 255 255 200
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.7
+      END  
+    END 
+    CLASS
+      NAME "Hoch- und Flachmoor / Schilfgürtel"
+      MAXSCALEDENOM 5000
+      EXPRESSION {humusiert.Hoch_Flachmoor,Gewaesser.Schilfguertel}
+      STYLE
+        COLOR 200 255 240
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.7
+      END  
+    END     
+    CLASS
+      NAME "geschlossener Wald"
+      EXPRESSION "bestockt.geschlossener_Wald"
+      STYLE
+        COLOR 160 240 160
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.7
+      END  
+    END     
+    CLASS
+      NAME "Wytweide und übrige bestockte"
+      EXPRESSION {bestockt.Wytweide.Wytweide_dicht,bestockt.Wytweide.Wytweide_offen,bestockt.uebrige_bestockte.Parkanlage_bestockt,bestockt.uebrige_bestockte.Hecke,bestockt.uebrige_bestockte.uebrige_bestockte}
+      STYLE
+        COLOR 200 240 160
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.7
+      END  
+    END     
+    CLASS
+      NAME "vegetationslos"
+      MAXSCALEDENOM 5000
+      EXPRESSION {vegetationslos.Fels,vegetationslos.Gletscher_Firn,vegetationslos.Geroell_Sand,vegetationslos.Abbau_Deponie.Steinbruch,vegetationslos.Abbau_Deponie.Kiesgrube,vegetationslos.Abbau_Deponie.Deponie,vegetationslos.Abbau_Deponie.uebriger_Abbau,vegetationslos.uebrige_vegetationslose}
+      STYLE
+        COLOR 255 255 255
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.7
+      END  
+    END  
+  END  
+
+  LAYER
+    NAME "OSNR"
+    METADATA
+      "wms_title" "Liegenschaftsnummern"     ## required
+      "wms_extent" "2590000 1210000 2650000 1270000"    ## performance 
+      "wms_include_items" "all"
+      "gml_include_items" "all"
+      "wms_feature_mime_type" "application/vnd.ogc.gml"
+    END
+    
+    TEMPLATE fooOnlyForWMSGetFeatureInfo                ## required for GetFeatureInfo
+
+    TYPE POINT
+    STATUS OFF
+
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "host=localhost dbname=xanadu2 user=stefan password=ziegler12 port=5432"    
+    #DATA "pos from av_avdpool_next.v_liegenschaften_grundstueckpos using unique t_id using srid=2056"
+    DATA "pos FROM (SELECT *, 'cc' AS labelpos, (100-ori)*0.9 AS rot FROM av_avdpool_next.v_liegenschaften_grundstueckpos) AS foo USING UNIQUE t_id USING srid=2056"
+      
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+            
+    PROJECTION
+      "init=epsg:2056"   ##recommended
+    END
+    
+    MAXSCALEDENOM 5000
+    
+    LABELITEM "nummer"
+     
+    CLASS
+      NAME "Liegenschaftsnummern"
+      LABEL
+        TYPE truetype
+        ANTIALIAS true
+        FONT "cadastrabd"
+        COLOR 0 0 0    
+        OUTLINECOLOR 255 255 255
+        SIZE 8  
+        POSITION [labelpos] 
+        ANGLE [rot] 
+      END
+    END  
+  END 
+
+  LAYER
+    NAME "RESF"
+    METADATA
+      "wms_title" "Liegenschaften"     ## required
+      "wms_extent" "2590000 1210000 2650000 1270000"    ## performance 
+      "wms_include_items" "all"
+      "gml_include_items" "all"
+      "wms_feature_mime_type" "application/vnd.ogc.gml"
+    END
+    
+    TEMPLATE fooOnlyForWMSGetFeatureInfo                ## required for GetFeatureInfo
+
+    TYPE POLYGON
+    STATUS OFF
+
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "host=localhost dbname=xanadu2 user=stefan password=ziegler12 port=5432"    
+    DATA "geometrie FROM av_avdpool_next.liegenschaften_liegenschaft USING UNIQUE t_id USING srid=2056"
+
+    PROJECTION
+      "init=epsg:2056"   ##recommended
+    END
+    
+    MAXSCALEDENOM 5000
+    
+    CLASS
+      NAME "Liegenschaften"
+      STYLE
+        OUTLINECOLOR 0 0 0
+        WIDTH 2
+      END  
+    END  
+  END 
+ 
+  LAYER
+    NAME "MBSF"
+    #GROUP "Hoheitsgrenzen"    
+    METADATA
+      "wms_title" "Gemeindegrenzen"     ## required
+      "wms_extent" "2590000 1210000 2650000 1270000"    ## performance 
+      "wms_include_items" "all"
+      "gml_include_items" "all"
+      "wms_feature_mime_type" "application/vnd.ogc.gml"
+    END
+    
+    TEMPLATE fooOnlyForWMSGetFeatureInfo                ## required for GetFeatureInfo
+
+    TYPE POLYGON
+    STATUS OFF
+
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "host=localhost dbname=xanadu2 user=stefan password=ziegler12 port=5432"    
+    DATA "geometrie from av_avdpool_next.gemeindegrenzen_gemeindegrenze using unique t_id using srid=2056"
+
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+
+    PROJECTION
+      "init=epsg:2056"   ##recommended
+    END
+    
+    #MAXSCALEDENOM 150000
+    
+    CLASS
+      NAME "Gemeindegrenzen"
+      STYLE
+        OUTLINECOLOR 180 0 0
+        WIDTH 2
+      END  
+    END  
+  END 
+
+END # Map File
