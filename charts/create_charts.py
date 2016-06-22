@@ -37,11 +37,11 @@ t12 = [1, 2, 4, 8, 16, 32, 64]
 #wms = [1.8, 3.0, 4.6, 5.2, 2.6, pylab.nan, pylab.nan]
 
 # AVWMS (req/s)
-#filename = "avwms_req_per_sec"
-#title = "AVWMS (BoFlaeche, GB-Nr. Liegenschaften)"
-#mapserver = [9.1, 19.2, 32.3, 35.0, 34.7,34.7, 34.7]
-#mapserver_fcgi = [19.4, 38.1, 62.2, 67.2, 65.9, 67.2, 67.2]
-#qgisserver = [12.4, 25.0, 42.7, 46.9, 46.0, 46.6, 46.8]
+filename = "avwms_req_per_sec"
+title = "AVWMS (BoFlaeche, GB-Nr. Liegenschaften)"
+mapserver = [9.1, 19.2, 32.3, 35.0, 34.7,34.7, 34.7]
+mapserver_fcgi = [19.4, 38.1, 62.2, 67.2, 65.9, 67.2, 67.2]
+qgisserver = [12.4, 25.0, 42.7, 46.9, 46.0, 46.6, 46.8]
 
 # AVWMS (max response time)
 #filename = "avwms_max_resp_time"
@@ -72,24 +72,24 @@ t12 = [1, 2, 4, 8, 16, 32, 64]
 #qgisserver = [6.3, 12.4, 22.3, 23.2, 23.1, 23.0, 23.2]
 
 # Orthofoto (average / max_resp_time)
-filename = "ortho_resampling_max_resp_time"
-title = "Orthofoto (average)"
-mapserver = [4.8, 4.8, 5.2, 10.5, 20.9, 42.1, 84.5]
-mapserver_fcgi = [4.6, 4.7, 5.0, 10.0, 58.5, 64.1, 65.8]
-qgisserver = [0.8, 1.4, 1.6, 2.8, 25.3, 47.1, 64.1]
+#filename = "ortho_resampling_max_resp_time"
+#title = "Orthofoto (average)"
+#mapserver = [4.8, 4.8, 5.2, 10.5, 20.9, 42.1, 84.5]
+#mapserver_fcgi = [4.6, 4.7, 5.0, 10.0, 58.5, 64.1, 65.8]
+#qgisserver = [0.8, 1.4, 1.6, 2.8, 25.3, 47.1, 64.1]
 
 plt.plot(t11, mapserver,  marker='s', color='b', label='MapServer (CGI)', linewidth='2')
 plt.plot(t11, mapserver_fcgi, marker='^', color='m', label='MapServer (FCGI)', linewidth='2')
 plt.plot(t11, qgisserver, marker='o', color='y', label='QGIS-Server', linewidth='2')
 
 plt.xlabel('N Requests')
-#plt.ylabel('Throughput (Req/s)')
-plt.ylabel('Max response time (s)')
+plt.ylabel('Throughput (Req/s)')
+#plt.ylabel('Max response time (s)')
 plt.title(title)
 plt.legend(bbox_to_anchor=(0.02, 0.98), loc=2, borderaxespad=0.)
 
 plt.xticks( [1, 2, 3, 4, 5, 6, 7],  t12 )
-plt.ylim([0, 85])
+plt.ylim([0, 70])
 #plt.ylim([0, 50])
 
 plt.grid(b=True, which='major', linestyle='dotted') 
